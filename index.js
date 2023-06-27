@@ -23,25 +23,9 @@ client.connectRTUBuffered(config.ttyDevice, {
 const app = express()
 const port = 3000
 
-// async function getSettings () {
-//   const settings = []
-//   try {
-//     const vals = await client.readInputRegisters(0x3000,1);
-//     console.debug(vals)
-//   } catch (err) {
-//     console.error(err)
-//   }
-//   return settings
-// }
-
 app.get('/', (req, res) => {
   res.send('Hello from epever prom exporter!')
 })
-
-// app.get('/settings', async (req, res) => {
-//   let settings = await getSettings()
-//   res.json(settings)
-// })
 
 function toHex(address) {
   return `0x${parseInt(address).toString(16)}`
@@ -66,9 +50,12 @@ function toNumber(value) {
   return -999
 }
 
+// types: GUAGE up/down, COUNTER up, HISTOGRAM, SUMMARY
 function formatOutput(register, address, value, spec) {
   let items = []
-  items.push(`# ${spec.name}`)
+  items.push(`# HELP ${config.prefix}_${spec.number} ${spec.name}`)
+  items.push(`# TYPE ${config.prefix}_${spec.number} GUAGE`)
+  if(spec.description && spec.description !== '') items.push(`# ${spec.description}`)
   var v = toNumber(value.data[0])
   items.push(`${config.prefix}_${spec.number}{register="${register}", address="${toHex(address)}", unit="${spec.unit}", times="${spec.times}"} ${v}`)
   return items
