@@ -3,8 +3,14 @@ Prometheus exporter for Epever Charge Controller
 
 ## get started
 
-Edit config in index.js
+Clone the repo:
+```bash
+git clone https://github.com/metaspan/epever-node-prometheus-exporter
+cd epever-node-prometheus-exporter
+npm install
+```
 
+Edit config in index.js:
 ```js
 const config = {
   // my device connected via USB
@@ -15,16 +21,16 @@ const config = {
 }
 ```
 
+Run the service:
 ```bash
-git clone https://github.com/metaspan/epever-node-prometheus-exporter
-cd epever-node-prometheus-exporter
-npm install
 node index.js
 ```
 
 ## PM2
 
+```bash
 pm2 start --name epever-node-prometheus-exporter index.js
+```
 
 ## Example output
 
